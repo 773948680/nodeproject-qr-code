@@ -1,0 +1,16 @@
+{
+  "dependencies": {
+    "esm": "^3.2.25",
+    "open": "^7.0.0",
+    "open-editor": "^2.0.1",
+    "pdfkit": "^0.10.0",
+    "pdfmake": "^0.1.61",
+    "qr-image": "^3.2.0",
+    "yargs": "^14.2.0"
+  },
+  "devDependencies": {
+    "babel-preset-env": "^1.7.0"
+  },
+  "author": "Bakary Konate",
+  "license": "MIT"
+}
