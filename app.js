@@ -51,7 +51,7 @@ createReadStream(filepath)
     open(outputFilename, { app: "code" });
     //you uncomment the below code to open output.pddf with the default PDF App install in your OS.
     // open('output.pdf');
-    console.log("The PDF viewer app quit");
+   
   });
 
 const generateQR = (qr_text, qr_image_path) => {
