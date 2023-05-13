@@ -7,6 +7,7 @@ import open from "open";
 
 import { join } from "path";
 import { createWriteStream, createReadStream, writeFileSync } from "fs";
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const filepath = join(__dirname, "data/vouchers_alassane A_20191031.csv");
@@ -24,8 +25,9 @@ const doc = new PDFDocument({
     right: 5,
   },
 });
-doc.pipe(createWriteStream("output.pdf"));
-//let lines = 0;
+const outputFilename = `output-${Date.now().toString().substring(5)}.pdf`;
+doc.pipe(createWriteStream(outputFilename));
+
 const ssid = "Bloom";
 const nt_type = "none";
 const prices = new Map();
@@ -44,8 +46,9 @@ createReadStream(filepath)
   })
   .on("end", () => {
     doc.end();
-    //Open pdf file in VS Code must install vscode-pdf extension or any other vscode pdf viewer
-    open("output.pdf", { app: "code" });
+
+    //Open pdf file in VS Code.
+    open(outputFilename, { app: "code" });
     //you uncomment the below code to open output.pddf with the default PDF App install in your OS.
     // open('output.pdf');
     console.log("The PDF viewer app quit");
@@ -60,7 +63,9 @@ const generateQR = (qr_text, qr_image_path) => {
     }
   });
 };
-
+const price = (duration) => {
+  return prices.get(duration) ? prices.get(duration) + currency : "Gratuit";
+};
 const generatePDF = (option, path_to_imageQR) => {
   doc
     .fontSize(10)
@@ -81,8 +86,4 @@ const generatePDF = (option, path_to_imageQR) => {
     .fillColor("black")
     .text(option.code)
     .addPage();
-};
-
-const price = (duration) => {
-  return prices.get(duration) ? prices.get(duration) + currency : "Gratuit";
 };
