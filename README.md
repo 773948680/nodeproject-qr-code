@@ -9,8 +9,8 @@
     - [Prerequisites](#prerequisites)
     - [Installing](#installing)
   - [Usage ](#usage-)
-    - [The csv file is located in the data directory by default](#the-csv-file-is-located-in-the-data-directory-by-default)
-    - [The logo file is located in the images directory by default](#the-logo-file-is-located-in-the-images-directory-by-default)
+    - [A sample csv file is located in the data directory by default](#a-sample-csv-file-is-located-in-the-data-directory-by-default)
+    - [A sample logo file is located in the images directory by default](#a-sample-logo-file-is-located-in-the-images-directory-by-default)
     - [The resulting pdf file is locate in the output directory](#the-resulting-pdf-file-is-locate-in-the-output-directory)
 
 ## About <a name = "about"></a>
@@ -36,7 +36,7 @@ cd nodeproject-qr-code
 yarn install
 
 ## Usage <a name = "usage"></a>
-### The csv file is located in the data directory by default
+### A sample csv file is located in the data directory by default
 
-### The logo file is located in the images directory by default
+### A sample logo file is located in the images directory by default
 ### The resulting pdf file is locate in the output directory
