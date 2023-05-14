@@ -46,25 +46,6 @@ const currency = "Fr";
 // prices dictionary mapping
 prices.set("1", "100").set("24", "300").set("168", "1000").set("720", "3500");
 
-// Create a QR code for each line of the CSV file.
-createReadStream(filepath)
-  .pipe(csvParser())
-  .on("error", (err) => console.log(err))
-  .on("data", async (data) => {
-    const { code, comment, duration } = data;
-    const wifiCredntial = `WIFI:S:${ssid};T:${nt_type};P:${code};H:false;`;
-
-    generateQR(wifiCredntial, filepathImageQR);
-    const mydata = { code, comment, duration };
-    generatePDF(mydata, filepathImageQR);
-  })
-  .on("end", () => {
-    doc.end();
-
-    //Open pdf file in VS Code.
-    open(outputFilename, { app: "code" });
-  });
-
 //  funtion to generate QR code image from text.
 const generateQR = (qr_text, qr_image_path) => {
   let qrcode_png = imageSync(qr_text, { type: "png" });
@@ -102,3 +83,23 @@ const generatePDF = (option, path_to_imageQR) => {
     .text(option.code)
     .addPage();
 };
+// Create a QR code for each line of the CSV file.
+createReadStream(filepath)
+  .pipe(csvParser())
+  .on("error", (err) => console.log(err))
+  .on("data", async (data) => {
+    const { code, comment, duration } = data;
+    const wifiCredntial = `WIFI:S:${ssid};T:${nt_type};P:${code};H:false;`;
+
+    generateQR(wifiCredntial, filepathImageQR);
+    const mydata = { code, comment, duration };
+    generatePDF(mydata, filepathImageQR);
+  })
+  .on("end", () => {
+    doc.end();
+
+    //Open pdf file in VS Code.
+    open(outputFilename, { app: "code" });
+  });
+
+
