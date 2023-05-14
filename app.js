@@ -15,17 +15,16 @@ import csvParser from "csv-parser";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 // data file path to read from
-const filepath = join(__dirname, "data/vouchers_alassane A_20191031.csv");
+const filepath = join(__dirname, "data/vouchers.csv");
 // qr code image file path to write to
-let filepathImageQR = `./outputs/qrcode-${Date.now().toString()}.png`;
+let filepathImageQR = './outputs/qrcode.png';
 // image file path to read to
 const filepathImageLogo = join(__dirname, "images/logo.png");
 
 // Create a document
 const doc = new PDFDocument({
-  size: [145, 160],
+  size: [160, 160],
   margins: {
-    // by default, all are 72
     top: 5,
     bottom: 10,
     left: 5,
@@ -34,9 +33,7 @@ const doc = new PDFDocument({
 });
 
 // Pipe its output somewhere, like to a file
-const outputFilename = `./outputs/vouchers-${Date.now()
-  .toString()
-  .substring(5)}.pdf`;
+const outputFilename = `./outputs/vouchers.pdf`;
 
 doc.pipe(createWriteStream(outputFilename));
 
@@ -69,18 +66,23 @@ const generatePDF = (option, path_to_imageQR) => {
     .font("Courier-BoldOblique")
     .fillColor("orange")
     .image(filepathImageLogo, {
-      width: 60,
+      align: "center",
+      valign: "center",
+      width: 80,
     })
     .text(`WiFi ILLIMITÉ`)
     .fontSize(10)
     .fillColor("red")
-    .text(price(option.duration) + ` ${option.comment}`, { align: "right" })
+    .text(price(option.duration) + ` ${option.comment}`, { align: "center" })
+    .translate(40,0)
     .image(path_to_imageQR, {
+      fit: [60, 60],
       align: "center",
-      width: 70,
+      valign: "center",
     })
     .fontSize(10)
     .fillColor("black")
+    .translate(5,0)
     .text(option.code)
     .addPage();
 };
@@ -103,7 +105,7 @@ createReadStream(filepath)
     try {
       // delete QR code image file now that we have the PDF file.
       await unlink(filepathImageQR);
-     // console.log("successfully deleted ", filepathImageQR);
+      // console.log("successfully deleted ", filepathImageQR);
     } catch (error) {
       console.error("there was an error:", error.message);
     }
