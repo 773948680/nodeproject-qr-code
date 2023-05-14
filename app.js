@@ -1,4 +1,5 @@
 // Description: Generate PDF file with QR code for WiFi access.
+//
 // node js modules
 import path, { join } from "path";
 import { fileURLToPath } from "url";
@@ -62,11 +63,9 @@ createReadStream(filepath)
 
     //Open pdf file in VS Code.
     open(outputFilename, { app: "code" });
-    //you uncomment the below code to open output.pddf with the default PDF App install in your OS.
-    // open('output.pdf');
   });
 
-  //  funtion to generate QR code image from text.
+//  funtion to generate QR code image from text.
 const generateQR = (qr_text, qr_image_path) => {
   let qrcode_png = imageSync(qr_text, { type: "png" });
 
@@ -77,6 +76,7 @@ const generateQR = (qr_text, qr_image_path) => {
   });
 };
 
+// function to get price from duration.
 const price = (duration) => {
   return prices.get(duration) ? prices.get(duration) + currency : "Gratuit";
 };
