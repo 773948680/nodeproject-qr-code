@@ -23,7 +23,7 @@ An use case is hotel guest monetizing WIFI access point.
 ### Prerequisites
 
 Node JS v18
-Yarn 
+Yarn
 
 ### Installing
 
