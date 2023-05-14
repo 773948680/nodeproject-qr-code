@@ -103,7 +103,7 @@ createReadStream(filepath)
     try {
       // delete QR code image file now that we have the PDF file.
       await unlink(filepathImageQR);
-      console.log("successfully deleted ", filepathImageQR);
+     // console.log("successfully deleted ", filepathImageQR);
     } catch (error) {
       console.error("there was an error:", error.message);
     }
