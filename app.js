@@ -5,6 +5,7 @@ import path, { join } from "path";
 import { fileURLToPath } from "url";
 import open from "open";
 import { createWriteStream, createReadStream, writeFileSync } from "fs";
+import { unlink } from "node:fs/promises";
 
 // npm modules
 import PDFDocument from "pdfkit";
@@ -48,7 +49,7 @@ prices.set("1", "100").set("24", "300").set("168", "1000").set("720", "3500");
 
 //  funtion to generate QR code image from text.
 const generateQR = (qr_text, qr_image_path) => {
-  let qrcode_png = imageSync(qr_text, { type: "png" });
+  const qrcode_png = imageSync(qr_text, { type: "png" });
 
   writeFileSync(qr_image_path, qrcode_png, (err) => {
     if (err) {
@@ -95,11 +96,15 @@ createReadStream(filepath)
     const mydata = { code, comment, duration };
     generatePDF(mydata, filepathImageQR);
   })
-  .on("end", () => {
+  .on("end", async () => {
     doc.end();
-
     //Open pdf file in VS Code.
     open(outputFilename, { app: "code" });
+    try {
+      // delete QR code image file now that we have the PDF file.
+      await unlink(filepathImageQR);
+      console.log("successfully deleted ", filepathImageQR);
+    } catch (error) {
+      console.error("there was an error:", error.message);
+    }
   });
-
-
