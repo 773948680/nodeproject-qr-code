@@ -1,17 +1,22 @@
-import path from "path";
+// Description: Generate PDF file with QR code for WiFi access.
+// node js modules
+import path, { join } from "path";
 import { fileURLToPath } from "url";
+import open from "open";
+import { createWriteStream, createReadStream, writeFileSync } from "fs";
+
+// npm modules
 import PDFDocument from "pdfkit";
 import { imageSync } from "qr-image";
 import csvParser from "csv-parser";
-import open from "open";
-
-import { join } from "path";
-import { createWriteStream, createReadStream, writeFileSync } from "fs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+// data file path to read from
 const filepath = join(__dirname, "data/vouchers_alassane A_20191031.csv");
-let filepathImageQR = "./images/imageqr.png";
+// qr code image file path to write to
+let filepathImageQR = `./outputs/qrcode-${Date.now().toString()}.png`;
+// image file path to read to
 const filepathImageLogo = join(__dirname, "images/logo.png");
 
 // Create a document
@@ -25,17 +30,25 @@ const doc = new PDFDocument({
     right: 5,
   },
 });
-const outputFilename = `output-${Date.now().toString().substring(5)}.pdf`;
+
+// Pipe its output somewhere, like to a file
+const outputFilename = `./outputs/vouchers-${Date.now()
+  .toString()
+  .substring(5)}.pdf`;
+
 doc.pipe(createWriteStream(outputFilename));
 
 const ssid = "Bloom";
 const nt_type = "none";
 const prices = new Map();
 const currency = "Fr";
+// prices dictionary mapping
 prices.set("1", "100").set("24", "300").set("168", "1000").set("720", "3500");
 
+// Create a QR code for each line of the CSV file.
 createReadStream(filepath)
   .pipe(csvParser())
+  .on("error", (err) => console.log(err))
   .on("data", async (data) => {
     const { code, comment, duration } = data;
     const wifiCredntial = `WIFI:S:${ssid};T:${nt_type};P:${code};H:false;`;
@@ -51,9 +64,9 @@ createReadStream(filepath)
     open(outputFilename, { app: "code" });
     //you uncomment the below code to open output.pddf with the default PDF App install in your OS.
     // open('output.pdf');
-   
   });
 
+  //  funtion to generate QR code image from text.
 const generateQR = (qr_text, qr_image_path) => {
   let qrcode_png = imageSync(qr_text, { type: "png" });
 
@@ -63,9 +76,11 @@ const generateQR = (qr_text, qr_image_path) => {
     }
   });
 };
+
 const price = (duration) => {
   return prices.get(duration) ? prices.get(duration) + currency : "Gratuit";
 };
+// function to generate PDF file.
 const generatePDF = (option, path_to_imageQR) => {
   doc
     .fontSize(10)
