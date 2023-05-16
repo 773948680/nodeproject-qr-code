@@ -11,7 +11,7 @@
   - [Usage ](#usage-)
     - [A sample csv file is located in the data directory by default](#a-sample-csv-file-is-located-in-the-data-directory-by-default)
     - [A sample logo file is located in the images directory by default](#a-sample-logo-file-is-located-in-the-images-directory-by-default)
-    - [The resulting pdf file is locate in the output directory](#the-resulting-pdf-file-is-locate-in-the-output-directory)
+    - [The resulting pdf file is located in the output directory](#the-resulting-pdf-file-is-located-in-the-output-directory)
 
 ## About <a name = "about"></a>
 Generate PDF file with QR code for WiFi access from an excel or csv file
@@ -39,4 +39,4 @@ yarn install
 ### A sample csv file is located in the data directory by default
 
 ### A sample logo file is located in the images directory by default
-### The resulting pdf file is locate in the output directory
+### The resulting pdf file is located in the output directory
