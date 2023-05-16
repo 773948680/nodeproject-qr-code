@@ -4,20 +4,22 @@
 import path, { join } from "path";
 import { fileURLToPath } from "url";
 import open from "open";
-import { createWriteStream, createReadStream, writeFileSync } from "fs";
+import { createWriteStream, createReadStream } from "fs";
 import { unlink } from "node:fs/promises";
 
 // npm modules
 import PDFDocument from "pdfkit";
-import { imageSync } from "qr-image";
 import csvParser from "csv-parser";
+
+// util functions import
+import { generatePDF, generateQR } from "./utils/util.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 // data file path to read from
 const filepath = join(__dirname, "data/vouchers.csv");
 // qr code image file path to write to
-let filepathImageQR = './outputs/qrcode.png';
+let filepathImageQR = "./outputs/qrcode.png";
 // image file path to read to
 const filepathImageLogo = join(__dirname, "images/logo.png");
 
@@ -39,53 +41,7 @@ doc.pipe(createWriteStream(outputFilename));
 
 const ssid = "Bloom";
 const nt_type = "none";
-const prices = new Map();
-const currency = "Fr";
-// prices dictionary mapping
-prices.set("1", "100").set("24", "300").set("168", "1000").set("720", "3500");
 
-//  funtion to generate QR code image from text.
-const generateQR = (qr_text, qr_image_path) => {
-  const qrcode_png = imageSync(qr_text, { type: "png" });
-
-  writeFileSync(qr_image_path, qrcode_png, (err) => {
-    if (err) {
-      console.log(err);
-    }
-  });
-};
-
-// function to get price from duration.
-const price = (duration) => {
-  return prices.get(duration) ? prices.get(duration) + currency : "Gratuit";
-};
-// function to generate PDF file.
-const generatePDF = (option, path_to_imageQR) => {
-  doc
-    .fontSize(10)
-    .font("Courier-BoldOblique")
-    .fillColor("orange")
-    .image(filepathImageLogo, {
-      align: "center",
-      valign: "center",
-      width: 80,
-    })
-    .text(`WiFi ILLIMITÉ`)
-    .fontSize(10)
-    .fillColor("red")
-    .text(price(option.duration) + ` ${option.comment}`, { align: "center" })
-    .translate(40,0)
-    .image(path_to_imageQR, {
-      fit: [60, 60],
-      align: "center",
-      valign: "center",
-    })
-    .fontSize(10)
-    .fillColor("black")
-    .translate(5,0)
-    .text(option.code)
-    .addPage();
-};
 // Create a QR code for each line of the CSV file.
 createReadStream(filepath)
   .pipe(csvParser())
@@ -96,7 +52,7 @@ createReadStream(filepath)
 
     generateQR(wifiCredntial, filepathImageQR);
     const mydata = { code, comment, duration };
-    generatePDF(mydata, filepathImageQR);
+    generatePDF(doc, mydata, filepathImageLogo, filepathImageQR);
   })
   .on("end", async () => {
     doc.end();
