@@ -5,7 +5,13 @@ import { writeFileSync } from "fs";
 import { imageSync } from "qr-image";
 
 //  funtion to generate QR code image from text.
-export const generateQR = (qr_text, qr_image_path) => {
+export const generateQR = (
+  qr_text,
+  qr_image_path,
+  doc,
+  option,
+  filepathImageLogo
+) => {
   const qrcode_png = imageSync(qr_text, { type: "png" });
 
   writeFileSync(qr_image_path, qrcode_png, (err) => {
@@ -13,6 +19,7 @@ export const generateQR = (qr_text, qr_image_path) => {
       console.log(err);
     }
   });
+  generatePDF(doc, option, filepathImageLogo, qr_image_path);
 };
 // prices dictionary mapping
 const prices = new Map();
@@ -24,12 +31,7 @@ const price = (duration) => {
 };
 
 // function to generate PDF file.
-export const generatePDF = (
-  doc,
-  option,
-  filepathImageLogo,
-  path_to_imageQR
-) => {
+const generatePDF = (doc, option, filepathImageLogo, path_to_imageQR) => {
   doc
     .fontSize(10)
     .font("Courier-BoldOblique")
@@ -56,4 +58,4 @@ export const generatePDF = (
     .addPage();
 };
 
-export default  { generatePDF, generateQR };
+export default generateQR;

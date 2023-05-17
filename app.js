@@ -12,7 +12,7 @@ import PDFDocument from "pdfkit";
 import csvParser from "csv-parser";
 
 // util functions import
-import { generatePDF, generateQR } from "./utils/util.js";
+import { generateQR } from "./utils/util.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -39,8 +39,8 @@ const doc = new PDFDocument({
 const outputFilename = `./outputs/vouchers.pdf`;
 doc.pipe(createWriteStream(outputFilename));
 
-// The access point information
-const WIFI_SSID = "Bloom";
+// The access point name
+const WIFI_SSID = "VIRGIN045";
 const WIFI_NT_TYPE = "none";
 
 // Create a QR code for each line of the CSV file.
@@ -50,10 +50,8 @@ createReadStream(filepath)
   .on("data", async (data) => {
     const { code, comment, duration } = data;
     const wifiCredntial = `WIFI:S:${WIFI_SSID};T:${WIFI_NT_TYPE};P:${code};H:false;`;
-
-    generateQR(wifiCredntial, filepathImageQR);
     const mydata = { code, comment, duration };
-    generatePDF(doc, mydata, filepathImageLogo, filepathImageQR);
+    generateQR(wifiCredntial, filepathImageQR, doc, mydata, filepathImageLogo);
   })
   .on("end", async () => {
     doc.end();
