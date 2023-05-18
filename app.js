@@ -40,7 +40,7 @@ const outputFilename = `./outputs/vouchers.pdf`;
 doc.pipe(createWriteStream(outputFilename));
 
 // The access point name
-const WIFI_SSID = "VIRGIN045";
+const WIFI_SSID = "Bloom";
 const WIFI_NT_TYPE = "none";
 
 // Create a QR code for each line of the CSV file.
