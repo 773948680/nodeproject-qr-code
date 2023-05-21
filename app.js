@@ -18,7 +18,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // data file path to read from
-const filepath = join(__dirname, "data/vouchers.csv");
+const filepathTocsv = join(__dirname, "data/vouchers.csv");
 // qr code image file path to write to
 let filepathImageQR = "./outputs/qrcode.png";
 // image file path to read to
@@ -44,12 +44,14 @@ const WIFI_SSID = "Bloom";
 const WIFI_NT_TYPE = "none";
 
 // Create a QR code for each line of the CSV file.
-createReadStream(filepath)
+createReadStream(filepathTocsv)
   .pipe(csvParser())
   .on("error", (err) => console.log(err))
   .on("data", async (data) => {
+    //
     const { code, comment, duration } = data;
     const wifiCredntial = `WIFI:S:${WIFI_SSID};T:${WIFI_NT_TYPE};P:${code};H:false;`;
+    // make qr code
     const mydata = { code, comment, duration };
     generateQR(wifiCredntial, filepathImageQR, doc, mydata, filepathImageLogo);
   })
