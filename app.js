@@ -48,12 +48,10 @@ createReadStream(filepathTocsv)
   .pipe(csvParser())
   .on("error", (err) => console.log(err))
   .on("data", async (data) => {
-    //
-    const { code, comment, duration } = data;
-    const wifiCredntial = `WIFI:S:${WIFI_SSID};T:${WIFI_NT_TYPE};P:${code};H:false;`;
+    // form url string
+    const wifiCredntial = `WIFI:S:${WIFI_SSID};T:${WIFI_NT_TYPE};P:${data.code};H:false;`;
     // make qr code
-    const mydata = { code, comment, duration };
-    generateQR(wifiCredntial, filepathImageQR, doc, mydata, filepathImageLogo);
+    generateQR(wifiCredntial, filepathImageQR, doc, data, filepathImageLogo);
   })
   .on("end", async () => {
     doc.end();
