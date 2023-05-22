@@ -11,7 +11,7 @@ import { unlink } from "node:fs/promises";
 import PDFDocument from "pdfkit";
 import csvParser from "csv-parser";
 
-// util functions import
+// import util functions
 import { generateQR } from "./utils/util.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -39,9 +39,11 @@ const doc = new PDFDocument({
 const outputFilename = `./outputs/vouchers.pdf`;
 doc.pipe(createWriteStream(outputFilename));
 
-// The access point name
-const WIFI_SSID = "Bloom";
-const WIFI_NT_TYPE = "none";
+// The access point information
+const accessPoint = {
+  ssid: "Bloom",
+  networkType: "none",
+};
 
 // Create a QR code for each line of the CSV file.
 createReadStream(filepathTocsv)
@@ -49,7 +51,7 @@ createReadStream(filepathTocsv)
   .on("error", (err) => console.log(err))
   .on("data", async (data) => {
     // form url string
-    const wifiCredntial = `WIFI:S:${WIFI_SSID};T:${WIFI_NT_TYPE};P:${data.code};H:false;`;
+    const wifiCredntial = `WIFI:S:${accessPoint.ssid};T:${accessPoint.networkType};P:${data.code};H:false;`;
     // generate the qr code
     generateQR(wifiCredntial, filepathImageQR, doc, data, filepathImageLogo);
   })
