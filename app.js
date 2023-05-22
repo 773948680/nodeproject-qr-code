@@ -50,7 +50,7 @@ createReadStream(filepathTocsv)
   .on("data", async (data) => {
     // form url string
     const wifiCredntial = `WIFI:S:${WIFI_SSID};T:${WIFI_NT_TYPE};P:${data.code};H:false;`;
-    // make qr code
+    // generate the qr code
     generateQR(wifiCredntial, filepathImageQR, doc, data, filepathImageLogo);
   })
   .on("end", async () => {
