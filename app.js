@@ -39,21 +39,18 @@ const doc = new PDFDocument({
 const outputFilename = `./outputs/vouchers.pdf`;
 doc.pipe(createWriteStream(outputFilename));
 
-// The access point information
-const accessPoint = {
-  ssid: "Bloom",
-  networkType: "none",
-};
-
 // Create a QR code for each line of the CSV file.
 createReadStream(filepathTocsv)
   .pipe(csvParser())
   .on("error", (err) => console.log(err))
-  .on("data", async (data) => {
-    // form url string
-    const wifiCredntial = `WIFI:S:${accessPoint.ssid};T:${accessPoint.networkType};P:${data.code};H:false;`;
+  .on("data", async (rowData) => {
+    const data = {
+      code: rowData.code,
+      comment: rowData.comment,
+      duration: rowData.duration,
+    };
     // generate the qr code
-    generateQR(wifiCredntial, filepathImageQR, doc, data, filepathImageLogo);
+    generateQR(filepathImageQR, doc, data, filepathImageLogo);
   })
   .on("end", async () => {
     doc.end();

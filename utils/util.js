@@ -5,21 +5,22 @@ import { writeFileSync } from "fs";
 import { imageSync } from "qr-image";
 
 //  funtion to generate QR code image from text.
-export const generateQR = (
-  qr_text,
-  qr_image_path,
-  doc,
-  option,
-  filepathImageLogo
-) => {
-  const qrcode_png = imageSync(qr_text, { type: "png" });
+export const generateQR = (qr_image_path, doc, data, filepathImageLogo) => {
+  // The access point information
+  const accessPoint = {
+    ssid: "Bloom",
+    networkType: "none",
+  };
+  // form url string
+  const wifiCredntial = `WIFI:S:${accessPoint.ssid};T:${accessPoint.networkType};P:${data.code};H:false;`;
+  const qrcode_png = imageSync(wifiCredntial, { type: "png" });
 
   writeFileSync(qr_image_path, qrcode_png, (err) => {
     if (err) {
       console.log(err);
     }
   });
-  generatePDF(doc, option, filepathImageLogo, qr_image_path);
+  generatePDF(doc, data, filepathImageLogo, qr_image_path);
 };
 // prices dictionary mapping
 const prices = new Map();
