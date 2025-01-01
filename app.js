@@ -11,7 +11,7 @@ import { unlink } from "node:fs/promises";
 import PDFDocument from "pdfkit";
 import csvParser from "csv-parser";
 
-// import util functions
+// import my util functions
 import { generateQR } from "./utils/util.js";
 
 const __filename = fileURLToPath(import.meta.url);
