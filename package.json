@@ -1,6 +1,7 @@
 {
   "type": "module",
   "dependencies": {
+    "core-js": "^3.42.0",
     "csv-parser": "^3.0.0",
     "esm": "^3.2.25",
     "open": "^7.0.0",
@@ -10,7 +11,10 @@
     "yargs": "^14.2.0"
   },
   "devDependencies": {
-    "babel-preset-env": "^1.7.0"
+    "babel-preset-env": "^0.0.0"
+  },
+    "scripts": {
+    "start": "node app.js"
   },
   "author": "Bakary Konate",
   "license": "MIT"
