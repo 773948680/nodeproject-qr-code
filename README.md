@@ -29,7 +29,7 @@ Yarn
 
 Clone the repo and install the dependencies.
 
-git clone <https://github.com/konateb/nodeproject-qr-code.git>
+git clone <https://github.com/773948680/nodeproject-qr-code>
 
 cd nodeproject-qr-code
 
